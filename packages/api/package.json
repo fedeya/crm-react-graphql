@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
     "@types/mongoose": "^5.7.32",
     "@types/node": "^14.0.23",
     "ts-node-dev": "^1.0.0-pre.52",
@@ -18,9 +19,13 @@
   },
   "dependencies": {
     "@typegoose/typegoose": "^7.3.0",
+    "@types/jsonwebtoken": "^8.5.0",
     "apollo-server": "^2.16.0",
+    "bcrypt": "^5.0.0",
     "class-validator": "^0.12.2",
+    "dotenv": "^8.2.0",
     "graphql": "^15.3.0",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.25",
     "reflect-metadata": "^0.1.13",
     "type-graphql": "^1.0.0-rc.3"
