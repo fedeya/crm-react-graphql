@@ -12,6 +12,6 @@ export async function initServer() {
     const { url } = await server.listen();
     console.log(`Server listening on ${url}`);
   } catch (err) {
-    console.log(err.message);
+    console.log(err);
   }
 }
