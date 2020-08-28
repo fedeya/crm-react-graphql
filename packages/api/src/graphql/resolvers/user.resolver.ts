@@ -6,14 +6,14 @@ import { UserInput } from '@Inputs/user.input';
 
 @Resolver(User)
 export class UserResolver {
-  @Query(returns => [User])
-  async getUsers() {
+  @Query(() => [User])
+  async users() {
     const users = await UserModel.find().exec();
 
     return users;
   }
 
-  @Mutation(returns => User)
+  @Mutation(() => User)
   async createUser(@Arg('input') input: UserInput) {
     const user = await UserModel.findOne({ email: input.email }).exec();
     if (user) throw new Error('the user is already registed');

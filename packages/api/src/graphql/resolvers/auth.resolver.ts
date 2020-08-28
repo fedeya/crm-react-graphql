@@ -9,8 +9,8 @@ import { generateToken, verifyToken } from '@Utils/auth';
 
 @Resolver()
 export class AuthResolver {
-  @Mutation(returns => Token)
-  async userAuth(@Arg('input') input: AuthInput) {
+  @Mutation(() => Token)
+  async login(@Arg('input') input: AuthInput) {
     const { email, password } = input;
 
     const user = await UserModel.findOne({ email }).exec();
@@ -22,8 +22,8 @@ export class AuthResolver {
     return { token: generateToken(user, '24h') };
   }
 
-  @Query(returns => User)
-  async getUser(@Arg('token') token: string) {
+  @Query(() => User)
+  async user(@Arg('token') token: string) {
     const data = verifyToken(token);
     const user = await UserModel.findById(data.user.id).exec();
 

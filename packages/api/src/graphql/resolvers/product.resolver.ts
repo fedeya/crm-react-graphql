@@ -5,15 +5,15 @@ import { ProductInput } from '@Inputs/product.input';
 
 @Resolver(Product)
 export class ProductResolver {
-  @Query(returns => [Product])
-  async getProducts() {
+  @Query(() => [Product])
+  async products() {
     const products = await ProductModel.find().exec();
 
     return products;
   }
 
-  @Query(returns => Product)
-  async getProduct(@Arg('id', type => ID) id: string) {
+  @Query(() => Product)
+  async product(@Arg('id', () => ID) id: string) {
     const product = await ProductModel.findById(id).exec();
 
     if (!product) throw new Error('product not found');
@@ -21,7 +21,7 @@ export class ProductResolver {
     return product;
   }
 
-  @Mutation(returns => Product)
+  @Mutation(() => Product)
   async createProduct(@Arg('input') input: ProductInput) {
     const product = new ProductModel(input);
 
@@ -30,9 +30,9 @@ export class ProductResolver {
     return product;
   }
 
-  @Mutation(returns => Product)
+  @Mutation(() => Product)
   async updateProduct(
-    @Arg('id', type => ID) id: string,
+    @Arg('id', () => ID) id: string,
     @Arg('input') input: ProductInput
   ) {
     const product = await ProductModel.findByIdAndUpdate(id, input, {
@@ -43,8 +43,8 @@ export class ProductResolver {
     return product;
   }
 
-  @Mutation(returns => Product)
-  async deleteProduct(@Arg('id', type => ID) id: string) {
+  @Mutation(() => Product)
+  async deleteProduct(@Arg('id', () => ID) id: string) {
     const product = await ProductModel.findByIdAndDelete(id);
     if (!product) throw new Error('product not found');
 

@@ -3,18 +3,18 @@ import { prop, getModelForClass } from '@typegoose/typegoose';
 
 @ObjectType()
 export class Product {
-  @Field(type => ID)
+  @Field(() => ID)
   id!: string;
 
   @Field()
   @prop({ trim: true })
   name!: string;
 
-  @Field(type => Int)
+  @Field(() => Int)
   @prop()
   quantity!: number;
 
-  @Field(type => Float)
+  @Field(() => Float)
   @prop()
   price!: number;
 

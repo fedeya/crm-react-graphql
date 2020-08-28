@@ -7,9 +7,9 @@ export class ProductInput implements Partial<Product> {
   @Field()
   name!: string;
 
-  @Field(type => Int)
+  @Field(() => Int)
   quantity!: number;
 
-  @Field(type => Float)
+  @Field(() => Float)
   price!: number;
 }

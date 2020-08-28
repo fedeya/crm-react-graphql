@@ -3,7 +3,7 @@ import { User } from '@Entities/user.entity';
 
 @InputType()
 export class UserInput implements Partial<User> {
-  @Field(type => String)
+  @Field(() => String)
   name!: string;
 
   @Field()
