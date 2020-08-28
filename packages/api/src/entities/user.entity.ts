@@ -7,18 +7,18 @@ export class User {
   id!: string;
 
   @Field()
-  @prop({ trim: true })
+  @prop({ trim: true, required: true })
   name!: string;
 
   @Field()
-  @prop({ trim: true })
+  @prop({ trim: true, required: true })
   lastName!: string;
 
   @Field()
-  @prop({ trim: true, unique: true })
+  @prop({ trim: true, unique: true, required: true })
   email!: string;
 
-  @prop({ trim: true })
+  @prop({ trim: true, required: true })
   password!: string;
 
   @Field()

@@ -7,15 +7,15 @@ export class Product {
   id!: string;
 
   @Field()
-  @prop({ trim: true })
+  @prop({ trim: true, required: true })
   name!: string;
 
   @Field(() => Int)
-  @prop()
+  @prop({ required: true })
   quantity!: number;
 
   @Field(() => Float)
-  @prop()
+  @prop({ required: true })
   price!: number;
 
   @Field()
