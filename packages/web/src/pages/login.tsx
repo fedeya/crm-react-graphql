@@ -1,3 +1,5 @@
+import { withUrqlClient } from 'next-urql';
+
 const Login: React.FC = () => {
   return (
     <div className="bg-indigo-900 min-h-screen flex flex-col justify-center">

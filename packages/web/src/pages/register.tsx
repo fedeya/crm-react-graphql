@@ -2,6 +2,8 @@ import { useFormik } from 'formik';
 import FormError from '../components/form/error';
 import Field from '../components/form/field';
 import * as yup from 'yup';
+import { withUrqlClient } from 'next-urql';
+import urqlConfig from '../config/urql';
 
 const Register: React.FC = () => {
   const formik = useFormik({
@@ -85,4 +87,4 @@ const Register: React.FC = () => {
   );
 };
 
-export default Register;
+export default withUrqlClient(urqlConfig)(Register);
