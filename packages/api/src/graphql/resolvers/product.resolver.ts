@@ -21,6 +21,17 @@ export class ProductResolver {
     return product;
   }
 
+  @Query(() => [Product])
+  async searchProduct(@Arg('text') text: string): Promise<Product[]> {
+    const products = await ProductModel.find({
+      $text: { $search: text }
+    })
+      .limit(10)
+      .exec();
+
+    return products;
+  }
+
   @Mutation(() => Product)
   async createProduct(@Arg('input') input: ProductInput): Promise<Product> {
     const product = new ProductModel(input);

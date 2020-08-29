@@ -1,7 +1,8 @@
 import { ObjectType, Field, Int, Float, ID } from 'type-graphql';
-import { Prop, getModelForClass } from '@typegoose/typegoose';
+import { Prop, getModelForClass, Index } from '@typegoose/typegoose';
 
 @ObjectType()
+@Index({ name: 'text' })
 export class Product {
   @Field(() => ID)
   id!: string;
