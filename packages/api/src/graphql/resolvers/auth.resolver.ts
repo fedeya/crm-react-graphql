@@ -1,16 +1,17 @@
-import { Resolver, Mutation, Arg, Query } from 'type-graphql';
+import { Resolver, Mutation, Arg } from 'type-graphql';
 import bcrypt from 'bcrypt';
 
 import { Token } from '@Types/token.type';
 import { AuthInput } from '@Inputs/auth.input';
-import { UserModel, User } from '@Entities/user.entity';
+import { UserModel } from '@Entities/user.entity';
 
-import { generateToken, verifyToken } from '@Utils/auth';
+import { generateToken } from '@Utils/auth';
+import { UserInput } from '@Inputs/user.input';
 
-@Resolver()
+@Resolver(Token)
 export class AuthResolver {
   @Mutation(() => Token)
-  async login(@Arg('input') input: AuthInput) {
+  async login(@Arg('input') input: AuthInput): Promise<Token> {
     const { email, password } = input;
 
     const user = await UserModel.findOne({ email }).exec();
@@ -22,11 +23,20 @@ export class AuthResolver {
     return { token: generateToken(user, '24h') };
   }
 
-  @Query(() => User)
-  async user(@Arg('token') token: string) {
-    const data = verifyToken(token);
-    const user = await UserModel.findById(data.user.id).exec();
+  @Mutation(() => Token)
+  async createUser(@Arg('input') input: UserInput): Promise<Token> {
+    const user = await UserModel.findOne({ email: input.email }).exec();
+    if (user) throw new Error('the user is already registed');
 
-    return user;
+    const salt = await bcrypt.genSalt(10);
+    input.password = await bcrypt.hash(input.password, salt);
+
+    const newUser = new UserModel(input);
+
+    await newUser.save();
+
+    return {
+      token: generateToken(newUser, '24h')
+    };
   }
 }

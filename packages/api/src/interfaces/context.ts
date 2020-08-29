@@ -1,5 +1,7 @@
+import { ObjectId } from 'mongodb';
+
 export interface Context {
-  user: {
-    id: string;
+  user?: {
+    id: ObjectId;
   };
 }

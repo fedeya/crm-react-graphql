@@ -1,10 +1,11 @@
 import jwt from 'jsonwebtoken';
+import { ObjectId } from 'mongodb';
 
 import { User } from '@Entities/user.entity';
 
 interface IPayload {
   user: {
-    id: string;
+    id: ObjectId;
   };
   iat: number;
   exp: number;

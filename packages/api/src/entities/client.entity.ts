@@ -21,14 +21,14 @@ export class Client {
   company!: string;
 
   @Field()
-  @prop({ required: true, trim: true })
+  @prop({ trim: true })
   phone!: string;
 
   @Field()
   @prop({ required: true, unique: true })
   email!: string;
 
-  @Field()
+  @Field(() => User)
   @prop({ ref: User })
   salesman!: Ref<User>;
 
@@ -39,8 +39,8 @@ export class Client {
   updatedAt!: Date;
 }
 
-export default getModelForClass(Client, { 
+export const ClientModel = getModelForClass(Client, {
   schemaOptions: {
     timestamps: true
   }
-})
+});

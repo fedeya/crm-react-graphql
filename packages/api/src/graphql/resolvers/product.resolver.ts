@@ -6,14 +6,14 @@ import { ProductInput } from '@Inputs/product.input';
 @Resolver(Product)
 export class ProductResolver {
   @Query(() => [Product])
-  async products() {
+  async products(): Promise<Product[]> {
     const products = await ProductModel.find().exec();
 
     return products;
   }
 
   @Query(() => Product)
-  async product(@Arg('id', () => ID) id: string) {
+  async product(@Arg('id', () => ID) id: string): Promise<Product> {
     const product = await ProductModel.findById(id).exec();
 
     if (!product) throw new Error('product not found');
@@ -22,7 +22,7 @@ export class ProductResolver {
   }
 
   @Mutation(() => Product)
-  async createProduct(@Arg('input') input: ProductInput) {
+  async createProduct(@Arg('input') input: ProductInput): Promise<Product> {
     const product = new ProductModel(input);
 
     await product.save();
@@ -34,7 +34,7 @@ export class ProductResolver {
   async updateProduct(
     @Arg('id', () => ID) id: string,
     @Arg('input') input: ProductInput
-  ) {
+  ): Promise<Product> {
     const product = await ProductModel.findByIdAndUpdate(id, input, {
       new: true
     });
@@ -44,7 +44,7 @@ export class ProductResolver {
   }
 
   @Mutation(() => Product)
-  async deleteProduct(@Arg('id', () => ID) id: string) {
+  async deleteProduct(@Arg('id', () => ID) id: string): Promise<Product> {
     const product = await ProductModel.findByIdAndDelete(id);
     if (!product) throw new Error('product not found');
 
