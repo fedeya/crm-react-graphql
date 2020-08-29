@@ -17,9 +17,11 @@ registerEnumType(OrderState, {
 @ObjectType()
 export class OrderProduct {
   @Field(() => ID)
+  @Prop({ required: true })
   id!: string;
 
   @Field(() => Int)
+  @Prop({ required: true })
   quantity!: number;
 }
 
@@ -29,7 +31,7 @@ export class Order {
   id!: string;
 
   @Field(() => [OrderProduct])
-  @Prop({ required: true })
+  @Prop({ required: true, type: OrderProduct })
   order!: OrderProduct[];
 
   @Field(() => Int)

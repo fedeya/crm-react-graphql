@@ -24,7 +24,7 @@ export class AuthResolver {
   }
 
   @Mutation(() => Token)
-  async createUser(@Arg('input') input: UserInput): Promise<Token> {
+  async register(@Arg('input') input: UserInput): Promise<Token> {
     const user = await UserModel.findOne({ email: input.email }).exec();
     if (user) throw new Error('the user is already registed');
 
