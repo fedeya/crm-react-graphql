@@ -1,5 +1,5 @@
-import { prop, getModelForClass } from '@typegoose/typegoose';
 import { ObjectType, Field, ID } from 'type-graphql';
+import { Prop, getModelForClass } from '@typegoose/typegoose';
 
 @ObjectType()
 export class User {
@@ -7,18 +7,18 @@ export class User {
   id!: string;
 
   @Field()
-  @prop({ trim: true, required: true })
+  @Prop({ trim: true, required: true })
   name!: string;
 
   @Field()
-  @prop({ trim: true, required: true })
+  @Prop({ trim: true, required: true })
   lastName!: string;
 
   @Field()
-  @prop({ trim: true, unique: true, required: true })
+  @Prop({ trim: true, unique: true, required: true })
   email!: string;
 
-  @prop({ trim: true, required: true })
+  @Prop({ trim: true, required: true })
   password!: string;
 
   @Field()

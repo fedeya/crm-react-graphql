@@ -1,5 +1,5 @@
 import { ObjectType, Field, Int, Float, ID } from 'type-graphql';
-import { prop, getModelForClass } from '@typegoose/typegoose';
+import { Prop, getModelForClass } from '@typegoose/typegoose';
 
 @ObjectType()
 export class Product {
@@ -7,15 +7,15 @@ export class Product {
   id!: string;
 
   @Field()
-  @prop({ trim: true, required: true })
+  @Prop({ trim: true, required: true })
   name!: string;
 
   @Field(() => Int)
-  @prop({ required: true })
+  @Prop({ required: true })
   quantity!: number;
 
   @Field(() => Float)
-  @prop({ required: true })
+  @Prop({ required: true })
   price!: number;
 
   @Field()

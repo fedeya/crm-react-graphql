@@ -1,5 +1,5 @@
 import { ObjectType, Field, ID } from 'type-graphql';
-import { prop, getModelForClass, Ref } from '@typegoose/typegoose';
+import { Prop, getModelForClass, Ref } from '@typegoose/typegoose';
 
 import { User } from './user.entity';
 
@@ -9,27 +9,27 @@ export class Client {
   id!: string;
 
   @Field()
-  @prop({ required: true, trim: true })
+  @Prop({ required: true, trim: true })
   name!: string;
 
   @Field()
-  @prop({ required: true, trim: true })
+  @Prop({ required: true, trim: true })
   lastName!: string;
 
   @Field()
-  @prop({ required: true, trim: true })
+  @Prop({ required: true, trim: true })
   company!: string;
 
   @Field()
-  @prop({ trim: true })
+  @Prop({ trim: true })
   phone!: string;
 
   @Field()
-  @prop({ required: true, unique: true })
+  @Prop({ required: true, unique: true })
   email!: string;
 
   @Field(() => User)
-  @prop({ ref: User })
+  @Prop({ ref: User, required: true })
   salesman!: Ref<User>;
 
   @Field()
