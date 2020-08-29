@@ -1,3 +1,34 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.form-field {
+  @apply shadow;
+  @apply appearance-none;
+  @apply border;
+  @apply rounded;
+  @apply w-full;
+  @apply py-2;
+  @apply px-3;
+  @apply text-gray-700;
+  @apply leading-tight;
+}
+
+.form-field:focus {
+  @apply outline-none;
+  @apply shadow-outline;
+}
+
+.form-button {
+  @apply bg-indigo-800;
+  @apply w-full;
+  @apply mt-5;
+  @apply p-2;
+  @apply text-white;
+  @apply uppercase;
+  @apply rounded;
+}
+
+.form-button:hover {
+  @apply bg-indigo-900;
+}
