@@ -1,5 +1,5 @@
 import { Resolver, Mutation, Arg } from 'type-graphql';
-import bcrypt from 'bcrypt';
+import argon2 from 'argon2';
 
 import { Token } from '@Types/token.type';
 import { AuthInput } from '@Inputs/auth.input';
@@ -17,7 +17,7 @@ export class AuthResolver {
     const user = await UserModel.findOne({ email }).exec();
     if (!user) throw new Error('user not exist');
 
-    const correctPassword = await bcrypt.compare(password, user.password);
+    const correctPassword = await argon2.verify(user.password, password);
     if (!correctPassword) throw new Error('password is incorrect');
 
     return { token: generateToken(user, '24h') };
@@ -28,8 +28,7 @@ export class AuthResolver {
     const user = await UserModel.findOne({ email: input.email }).exec();
     if (user) throw new Error('the user is already registed');
 
-    const salt = await bcrypt.genSalt(10);
-    input.password = await bcrypt.hash(input.password, salt);
+    input.password = await argon2.hash(input.password);
 
     const newUser = new UserModel(input);
 
