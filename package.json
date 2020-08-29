@@ -1,10 +1,11 @@
 {
-  "name": "root",
+  "name": "crm",
   "private": false,
   "devDependencies": {
     "lerna": "^3.22.1"
   },
   "scripts": {
     "dev": "lerna run dev --stream --parallel"
-  }
+  },
+  "license": "MIT"
 }
