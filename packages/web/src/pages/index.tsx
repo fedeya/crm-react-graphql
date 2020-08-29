@@ -1,11 +1,5 @@
-import Layout from '../components/layout';
-
 const Home: React.FC = () => {
-  return (
-    <Layout>
-      <h1 className="text-2xl text-gray-800 font-ight">Clients</h1>
-    </Layout>
-  );
+  return <h1 className="text-2xl text-gray-800">Clients</h1>;
 };
 
 export default Home;

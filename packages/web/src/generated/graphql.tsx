@@ -245,6 +245,32 @@ export type MutationDeleteProductArgs = {
   id: Scalars['ID'];
 };
 
+export type LoginMutationVariables = Exact<{
+  input: AuthInput;
+}>;
+
+
+export type LoginMutation = (
+  { __typename?: 'Mutation' }
+  & { login: (
+    { __typename?: 'Token' }
+    & Pick<Token, 'token'>
+  ) }
+);
+
+export type RegisterMutationVariables = Exact<{
+  input: UserInput;
+}>;
+
+
+export type RegisterMutation = (
+  { __typename?: 'Mutation' }
+  & { register: (
+    { __typename?: 'Token' }
+    & Pick<Token, 'token'>
+  ) }
+);
+
 export type ProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -257,6 +283,28 @@ export type ProductsQuery = (
 );
 
 
+export const LoginDocument = gql`
+    mutation Login($input: AuthInput!) {
+  login(input: $input) {
+    token
+  }
+}
+    `;
+
+export function useLoginMutation() {
+  return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
+};
+export const RegisterDocument = gql`
+    mutation Register($input: UserInput!) {
+  register(input: $input) {
+    token
+  }
+}
+    `;
+
+export function useRegisterMutation() {
+  return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
+};
 export const ProductsDocument = gql`
     query Products {
   products {

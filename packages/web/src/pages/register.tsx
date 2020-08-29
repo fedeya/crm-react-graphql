@@ -1,11 +1,16 @@
 import { useFormik } from 'formik';
+import { withUrqlClient } from 'next-urql';
+import * as yup from 'yup';
+import Link from 'next/link';
+
 import FormError from '../components/form/error';
 import Field from '../components/form/field';
-import * as yup from 'yup';
-import { withUrqlClient } from 'next-urql';
 import urqlConfig from '../config/urql';
+import { useRegisterMutation } from '../generated/graphql';
 
 const Register: React.FC = () => {
+  const [result, register] = useRegisterMutation();
+
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -14,24 +19,27 @@ const Register: React.FC = () => {
       password: ''
     },
     validationSchema: yup.object({
-      name: yup.string().required('The Name is Required'),
-      lastName: yup.string().required('The Last Name is Required'),
+      name: yup.string().required('the name is required'),
+      lastName: yup.string().required('the last name is required'),
       email: yup
         .string()
-        .email('Enter a Valid Email')
-        .required('The Email is Required'),
+        .email('enter a valid email')
+        .required('the email is required'),
       password: yup
         .string()
-        .required('The Password is Required')
-        .min(6, 'The password must be 6 characters')
+        .required('the password is required')
+        .min(6, 'the password must be 6 characters')
     }),
-    onSubmit(values) {
-      console.log(values);
+    async onSubmit(values) {
+      const result = await register({
+        input: values
+      });
+      console.log(result);
     }
   });
 
   return (
-    <div className="bg-indigo-900 min-h-screen flex flex-col justify-center">
+    <>
       <h1 className="text-center text-2xl text-white">Register</h1>
       <div className="flex justify-center mt-5">
         <div className="w-full max-w-sm">
@@ -39,6 +47,8 @@ const Register: React.FC = () => {
             onSubmit={formik.handleSubmit}
             className="bg-white rounded shadow-md px-8 pt-6 pb-8 mb-4"
           >
+            <FormError message={result.error?.graphQLErrors[0]?.message} />
+
             <Field
               name="name"
               label="Name"
@@ -80,10 +90,15 @@ const Register: React.FC = () => {
             <button type="submit" className="form-button">
               Sign Up
             </button>
+            <Link href="/login">
+              <a className="text-purple my-2 block text-center">
+                you already have an account? log in
+              </a>
+            </Link>
           </form>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
