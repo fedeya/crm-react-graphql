@@ -1,0 +1,9 @@
+query Clients {
+  clients {
+    id
+    name
+    lastName
+    company
+    email
+  }
+}

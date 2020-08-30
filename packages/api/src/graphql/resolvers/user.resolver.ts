@@ -1,7 +1,7 @@
-import { Resolver, Query, Arg } from 'type-graphql';
+import { Resolver, Query, Authorized, Ctx } from 'type-graphql';
 
 import { User, UserModel } from '@Entities/user.entity';
-import { verifyToken } from '@Utils/auth';
+import { Context } from '@Interfaces';
 
 @Resolver(User)
 export class UserResolver {
@@ -12,10 +12,10 @@ export class UserResolver {
     return users;
   }
 
+  @Authorized()
   @Query(() => User)
-  async user(@Arg('token') token: string): Promise<User> {
-    const data = verifyToken(token);
-    const user = await UserModel.findById(data.user.id).exec();
+  async user(@Ctx() ctx: Context): Promise<User> {
+    const user = await UserModel.findById(ctx.user?.id).exec();
 
     return user!;
   }
