@@ -5,6 +5,7 @@ import { cacheExchange, Cache } from '@urql/exchange-graphcache';
 import fetch from 'isomorphic-unfetch';
 import Cookies from 'cookies';
 import { pipe, tap } from 'wonka';
+import { ClientsDocument } from '../generated/graphql';
 import { NextPageContext } from 'next';
 
 const isServer = typeof window === 'undefined';
@@ -25,9 +26,9 @@ const errorExchange = (ctx?: NextPageContext): Exchange => ({
   return pipe(
     forward(ops$),
     tap(({ error }) => {
-      if (error?.message.toLowerCase().includes('access denied')) {
-        if (isServer && ctx) {
-          if (ctx.res && !ctx.res.headersSent) {
+      if (isServer && ctx) {
+        if (ctx.res && !ctx.res.headersSent) {
+          if (error?.message.toLowerCase().includes('access denied')) {
             try {
               ctx.res.writeHead(302, { Location: '/login' });
               ctx.res.end();
@@ -48,6 +49,13 @@ const urqlConfig: NextUrqlClientConfig = (ssrExchange, ctx) => {
           login(_result, _args, cache, _info) {
             invalidateClients(cache);
             cache.invalidate('Query', 'user');
+          },
+          createClient(result, _args, cache, _info) {
+            cache.updateQuery({ query: ClientsDocument }, (data: any) => {
+              if (!data && !data.clients) return;
+              data.clients.push(result.createClient);
+              return data;
+            });
           },
           register(_result, _args, cache, _info) {
             invalidateClients(cache);

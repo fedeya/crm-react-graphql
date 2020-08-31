@@ -240,6 +240,19 @@ export type MutationDeleteProductArgs = {
   id: Scalars['ID'];
 };
 
+export type CreateClientMutationVariables = Exact<{
+  input: ClientInput;
+}>;
+
+
+export type CreateClientMutation = (
+  { __typename?: 'Mutation' }
+  & { createClient: (
+    { __typename?: 'Client' }
+    & Pick<Client, 'id' | 'name' | 'lastName' | 'company' | 'email' | 'phone'>
+  ) }
+);
+
 export type LoginMutationVariables = Exact<{
   input: AuthInput;
 }>;
@@ -273,7 +286,7 @@ export type ClientsQuery = (
   { __typename?: 'Query' }
   & { clients: Array<(
     { __typename?: 'Client' }
-    & Pick<Client, 'id' | 'name' | 'lastName' | 'company' | 'email'>
+    & Pick<Client, 'id' | 'name' | 'lastName' | 'company' | 'email' | 'phone'>
   )> }
 );
 
@@ -300,6 +313,22 @@ export type UserQuery = (
 );
 
 
+export const CreateClientDocument = gql`
+    mutation CreateClient($input: ClientInput!) {
+  createClient(input: $input) {
+    id
+    name
+    lastName
+    company
+    email
+    phone
+  }
+}
+    `;
+
+export function useCreateClientMutation() {
+  return Urql.useMutation<CreateClientMutation, CreateClientMutationVariables>(CreateClientDocument);
+};
 export const LoginDocument = gql`
     mutation Login($input: AuthInput!) {
   login(input: $input) {
@@ -330,6 +359,7 @@ export const ClientsDocument = gql`
     lastName
     company
     email
+    phone
   }
 }
     `;
