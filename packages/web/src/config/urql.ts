@@ -7,7 +7,7 @@ import Cookies from 'cookies';
 import { pipe, tap } from 'wonka';
 import { NextPageContext } from 'next';
 
-const IS_SERVER = typeof window === 'undefined';
+const isServer = typeof window === 'undefined';
 
 const invalidateClients = (cache: Cache) => {
   const allFields = cache.inspectFields('Query');
@@ -26,9 +26,13 @@ const errorExchange = (ctx?: NextPageContext): Exchange => ({
     forward(ops$),
     tap(({ error }) => {
       if (error?.message.toLowerCase().includes('access denied')) {
-        if (IS_SERVER) {
-          ctx?.res?.writeHead(302, { Location: '/login' });
-          ctx?.res?.end();
+        if (isServer && ctx) {
+          if (ctx.res && !ctx.res.headersSent) {
+            try {
+              ctx.res.writeHead(302, { Location: '/login' });
+              ctx.res.end();
+            } catch (err) {}
+          }
         }
       }
     })
@@ -52,19 +56,19 @@ const urqlConfig: NextUrqlClientConfig = (ssrExchange, ctx) => {
         }
       }
     }),
-    errorExchange(ctx),
     ssrExchange,
+    errorExchange(ctx),
     fetchExchange
   ];
 
-  if (!IS_SERVER) exchanges.push(devtoolsExchange);
+  if (!isServer) exchanges.unshift(devtoolsExchange);
 
   return {
     url: 'http://localhost:4000',
     exchanges,
     fetchOptions: () => {
       let token: string | null | undefined;
-      if (IS_SERVER && ctx) {
+      if (isServer && ctx) {
         const cookies = new Cookies(ctx.req!, ctx.res!);
         token = cookies.get('token');
       } else {

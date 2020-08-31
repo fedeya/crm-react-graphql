@@ -5,9 +5,7 @@ import urqlConfig from '../config/urql';
 import { useClientsQuery } from '../generated/graphql';
 
 const Home: React.FC = () => {
-  const [{ data, fetching, error }] = useClientsQuery();
-
-  console.log(error);
+  const [{ data, fetching }] = useClientsQuery();
 
   if (fetching) {
     return (
