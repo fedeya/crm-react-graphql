@@ -1,4 +1,4 @@
-import { Client as IClient } from '../../generated/graphql';
+import { Client as IClient } from '@Generated/graphql';
 
 type ClientProps = {
   client: Partial<IClient>;

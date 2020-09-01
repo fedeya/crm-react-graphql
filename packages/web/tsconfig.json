@@ -12,7 +12,14 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@Atoms/*": ["src/components/atoms/*"],
+      "@Molecules/*": ["src/components/molecules/*"],
+      "@Organisms/*": ["src/components/organisms/*"],
+      "@Generated/*": ["src/generated/*"]
+    }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]

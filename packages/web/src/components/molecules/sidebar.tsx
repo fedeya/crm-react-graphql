@@ -1,4 +1,4 @@
-import NavLink from './navlink';
+import NavLink from '@Atoms/navlink';
 
 const Sidebar: React.FC = () => {
   return (

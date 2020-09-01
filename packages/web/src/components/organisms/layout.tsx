@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Router, { useRouter } from 'next/router';
 
-import Header from './header';
-import Sidebar from './sidebar';
+import Header from '@Atoms/header';
+import Sidebar from '@Molecules/sidebar';
 
 const Layout: React.FC = ({ children }) => {
   const router = useRouter();

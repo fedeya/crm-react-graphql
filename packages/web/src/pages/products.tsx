@@ -1,8 +1,8 @@
 import { withUrqlClient } from 'next-urql';
 
 import urqlConfig from '../config/urql';
-import { useProductsQuery } from '../generated/graphql';
-import Layout from '../components/layout';
+import { useProductsQuery } from '@Generated/graphql';
+import Layout from '@Organisms/layout';
 
 const Products: React.FC = () => {
   const [{ data, fetching }] = useProductsQuery();
