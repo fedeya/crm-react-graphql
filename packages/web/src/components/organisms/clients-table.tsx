@@ -1,11 +1,11 @@
-import Client from '@Atoms/client';
-import { ClientsQuery } from '@Generated/graphql';
+import Client from '@Molecules/client';
+import { useClientsQuery } from '@Generated/graphql';
 
-type ClientsTableProps = {
-  data?: ClientsQuery;
-};
+const ClientsTable: React.FC = () => {
+  const [{ data, fetching }] = useClientsQuery();
 
-const ClientsTable: React.FC<ClientsTableProps> = ({ data }) => {
+  if (fetching) return <p>Loading...</p>;
+
   return (
     <table className="table-auto shadow-md mt-10 w-full w-lg">
       <thead className="bg-indigo-800">

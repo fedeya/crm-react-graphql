@@ -253,6 +253,19 @@ export type CreateClientMutation = (
   ) }
 );
 
+export type CreateProductMutationVariables = Exact<{
+  input: ProductInput;
+}>;
+
+
+export type CreateProductMutation = (
+  { __typename?: 'Mutation' }
+  & { createProduct: (
+    { __typename?: 'Product' }
+    & Pick<Product, 'id' | 'name' | 'price' | 'quantity'>
+  ) }
+);
+
 export type DeleteClientMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -263,6 +276,19 @@ export type DeleteClientMutation = (
   & { deleteClient: (
     { __typename?: 'Client' }
     & Pick<Client, 'id'>
+  ) }
+);
+
+export type DeleteProductMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteProductMutation = (
+  { __typename?: 'Mutation' }
+  & { deleteProduct: (
+    { __typename?: 'Product' }
+    & Pick<Product, 'id'>
   ) }
 );
 
@@ -306,6 +332,20 @@ export type UpdateClientMutation = (
   ) }
 );
 
+export type UpdateProductMutationVariables = Exact<{
+  id: Scalars['ID'];
+  input: ProductInput;
+}>;
+
+
+export type UpdateProductMutation = (
+  { __typename?: 'Mutation' }
+  & { updateProduct: (
+    { __typename?: 'Product' }
+    & Pick<Product, 'id' | 'name' | 'price' | 'quantity'>
+  ) }
+);
+
 export type ClientQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -330,6 +370,19 @@ export type ClientsQuery = (
   )> }
 );
 
+export type ProductQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type ProductQuery = (
+  { __typename?: 'Query' }
+  & { product: (
+    { __typename?: 'Product' }
+    & Pick<Product, 'id' | 'name' | 'quantity' | 'price'>
+  ) }
+);
+
 export type ProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -337,7 +390,7 @@ export type ProductsQuery = (
   { __typename?: 'Query' }
   & { products: Array<(
     { __typename?: 'Product' }
-    & Pick<Product, 'name' | 'quantity' | 'id' | 'price'>
+    & Pick<Product, 'id' | 'name' | 'quantity' | 'price'>
   )> }
 );
 
@@ -369,6 +422,20 @@ export const CreateClientDocument = gql`
 export function useCreateClientMutation() {
   return Urql.useMutation<CreateClientMutation, CreateClientMutationVariables>(CreateClientDocument);
 };
+export const CreateProductDocument = gql`
+    mutation CreateProduct($input: ProductInput!) {
+  createProduct(input: $input) {
+    id
+    name
+    price
+    quantity
+  }
+}
+    `;
+
+export function useCreateProductMutation() {
+  return Urql.useMutation<CreateProductMutation, CreateProductMutationVariables>(CreateProductDocument);
+};
 export const DeleteClientDocument = gql`
     mutation DeleteClient($id: ID!) {
   deleteClient(id: $id) {
@@ -379,6 +446,17 @@ export const DeleteClientDocument = gql`
 
 export function useDeleteClientMutation() {
   return Urql.useMutation<DeleteClientMutation, DeleteClientMutationVariables>(DeleteClientDocument);
+};
+export const DeleteProductDocument = gql`
+    mutation DeleteProduct($id: ID!) {
+  deleteProduct(id: $id) {
+    id
+  }
+}
+    `;
+
+export function useDeleteProductMutation() {
+  return Urql.useMutation<DeleteProductMutation, DeleteProductMutationVariables>(DeleteProductDocument);
 };
 export const LoginDocument = gql`
     mutation Login($input: AuthInput!) {
@@ -418,6 +496,20 @@ export const UpdateClientDocument = gql`
 export function useUpdateClientMutation() {
   return Urql.useMutation<UpdateClientMutation, UpdateClientMutationVariables>(UpdateClientDocument);
 };
+export const UpdateProductDocument = gql`
+    mutation UpdateProduct($id: ID!, $input: ProductInput!) {
+  updateProduct(id: $id, input: $input) {
+    id
+    name
+    price
+    quantity
+  }
+}
+    `;
+
+export function useUpdateProductMutation() {
+  return Urql.useMutation<UpdateProductMutation, UpdateProductMutationVariables>(UpdateProductDocument);
+};
 export const ClientDocument = gql`
     query Client($id: ID!) {
   client(id: $id) {
@@ -450,12 +542,26 @@ export const ClientsDocument = gql`
 export function useClientsQuery(options: Omit<Urql.UseQueryArgs<ClientsQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<ClientsQuery>({ query: ClientsDocument, ...options });
 };
+export const ProductDocument = gql`
+    query Product($id: ID!) {
+  product(id: $id) {
+    id
+    name
+    quantity
+    price
+  }
+}
+    `;
+
+export function useProductQuery(options: Omit<Urql.UseQueryArgs<ProductQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<ProductQuery>({ query: ProductDocument, ...options });
+};
 export const ProductsDocument = gql`
     query Products {
   products {
+    id
     name
     quantity
-    id
     price
   }
 }

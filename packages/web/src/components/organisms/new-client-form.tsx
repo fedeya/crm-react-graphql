@@ -41,22 +41,16 @@ const NewClientForm: React.FC = () => {
   return (
     <Form formik={formik}>
       <Error message={error?.graphQLErrors[0].message} />
-
       <FieldError name="name" formik={formik} />
-
       <FieldError
         name="lastName"
         label="Last Name"
         placeholder="Last Name"
         formik={formik}
       />
-
       <FieldError name="company" formik={formik} />
-
       <FieldError name="email" type="email" formik={formik} />
-
       <FieldError name="phone" type="tel" formik={formik} />
-
       <Button type="submit">Register Client</Button>
     </Form>
   );

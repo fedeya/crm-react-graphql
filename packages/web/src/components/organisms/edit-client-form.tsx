@@ -51,29 +51,27 @@ const EditClientForm: React.FC = () => {
         console.log(error);
         if (!data) return;
         await router.push('/');
-        Swal.fire('Updated', 'the client was updated successfully', 'success');
+        await Swal.fire(
+          'Updated',
+          'the client was updated successfully',
+          'success'
+        );
       }}
       enableReinitialize
     >
       {props => (
         <Form formik={props}>
           <Error message={error?.graphQLErrors[0].message} />
-
           <FieldError name="name" formik={props} />
-
           <FieldError
             name="lastName"
             label="Last Name"
             placeholder="Last Name"
             formik={props}
           />
-
           <FieldError name="company" formik={props} />
-
           <FieldError name="email" type="email" formik={props} />
-
           <FieldError name="phone" type="tel" formik={props} />
-
           <Button type="submit">Edit Client</Button>
         </Form>
       )}

@@ -1,8 +1,8 @@
 query Products {
   products {
+    id
     name
     quantity
-    id
     price
   }
 }

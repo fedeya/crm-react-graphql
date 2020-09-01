@@ -5,7 +5,7 @@ import { cacheExchange, Cache } from '@urql/exchange-graphcache';
 import fetch from 'isomorphic-unfetch';
 import Cookies from 'cookies';
 import { pipe, tap } from 'wonka';
-import { ClientsDocument } from '../generated/graphql';
+import { ClientsDocument, ProductsDocument } from '../generated/graphql';
 import { NextPageContext } from 'next';
 
 const isServer = typeof window === 'undefined';
@@ -63,6 +63,16 @@ const urqlConfig: NextUrqlClientConfig = (ssrExchange, ctx) => {
           },
           deleteClient(_result, args, cache, _info) {
             cache.invalidate({ __typename: 'Client', id: args.id as number });
+          },
+          createProduct(result, _args, cache, _info) {
+            cache.updateQuery({ query: ProductsDocument }, (data: any) => {
+              if (!data && !data.products) return;
+              data.products.push(result.createProduct);
+              return data;
+            });
+          },
+          deleteProduct(_result, args, cache, _info) {
+            cache.invalidate({ __typename: 'Product', id: args.id as number });
           }
         }
       }
