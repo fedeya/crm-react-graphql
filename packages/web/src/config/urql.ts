@@ -50,6 +50,10 @@ const urqlConfig: NextUrqlClientConfig = (ssrExchange, ctx) => {
             invalidateClients(cache);
             cache.invalidate('Query', 'user');
           },
+          register(_result, _args, cache, _info) {
+            invalidateClients(cache);
+            cache.invalidate('Query', 'user');
+          },
           createClient(result, _args, cache, _info) {
             cache.updateQuery({ query: ClientsDocument }, (data: any) => {
               if (!data && !data.clients) return;
@@ -57,9 +61,8 @@ const urqlConfig: NextUrqlClientConfig = (ssrExchange, ctx) => {
               return data;
             });
           },
-          register(_result, _args, cache, _info) {
-            invalidateClients(cache);
-            cache.invalidate('Query', 'user');
+          deleteClient(_result, args, cache, _info) {
+            cache.invalidate({ __typename: 'Client', id: args.id as number });
           }
         }
       }

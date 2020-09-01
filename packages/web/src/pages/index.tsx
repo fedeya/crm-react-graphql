@@ -19,7 +19,7 @@ const Home: React.FC = () => {
 
   return (
     <Layout>
-      <h1 className="text-2xl text-gray-800">Clients</h1>
+      <h1 className="text-2xl text-gray-800 mb-3">Clients</h1>
       <Link href="/new-client">
         <a className="my-3 form-button">New Client</a>
       </Link>

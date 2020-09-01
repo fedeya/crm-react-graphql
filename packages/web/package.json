@@ -25,6 +25,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-is": "^16.13.1",
+    "sweetalert2": "^9.17.1",
     "tailwindcss": "^1.7.6",
     "urql": "^1.10.0",
     "yup": "^0.29.3"

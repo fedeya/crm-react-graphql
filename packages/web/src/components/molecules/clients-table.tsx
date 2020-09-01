@@ -13,6 +13,8 @@ const ClientsTable: React.FC<ClientsTableProps> = ({ data }) => {
           <th className="w-1/5 py-2">Name</th>
           <th className="w-1/5 py-2">Company</th>
           <th className="w-1/5 py-2">Email</th>
+          <th className="w-1/5 py-2">Delete</th>
+          <th className="w-1/5 py-2">Edit</th>
         </tr>
       </thead>
       <tbody className="bg-white">

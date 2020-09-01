@@ -253,6 +253,19 @@ export type CreateClientMutation = (
   ) }
 );
 
+export type DeleteClientMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteClientMutation = (
+  { __typename?: 'Mutation' }
+  & { deleteClient: (
+    { __typename?: 'Client' }
+    & Pick<Client, 'id'>
+  ) }
+);
+
 export type LoginMutationVariables = Exact<{
   input: AuthInput;
 }>;
@@ -276,6 +289,33 @@ export type RegisterMutation = (
   & { register: (
     { __typename?: 'Token' }
     & Pick<Token, 'token'>
+  ) }
+);
+
+export type UpdateClientMutationVariables = Exact<{
+  id: Scalars['ID'];
+  input: ClientInput;
+}>;
+
+
+export type UpdateClientMutation = (
+  { __typename?: 'Mutation' }
+  & { updateClient: (
+    { __typename?: 'Client' }
+    & Pick<Client, 'id' | 'name' | 'lastName' | 'company' | 'email' | 'phone'>
+  ) }
+);
+
+export type ClientQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type ClientQuery = (
+  { __typename?: 'Query' }
+  & { client: (
+    { __typename?: 'Client' }
+    & Pick<Client, 'id' | 'name' | 'lastName' | 'company' | 'email' | 'phone'>
   ) }
 );
 
@@ -329,6 +369,17 @@ export const CreateClientDocument = gql`
 export function useCreateClientMutation() {
   return Urql.useMutation<CreateClientMutation, CreateClientMutationVariables>(CreateClientDocument);
 };
+export const DeleteClientDocument = gql`
+    mutation DeleteClient($id: ID!) {
+  deleteClient(id: $id) {
+    id
+  }
+}
+    `;
+
+export function useDeleteClientMutation() {
+  return Urql.useMutation<DeleteClientMutation, DeleteClientMutationVariables>(DeleteClientDocument);
+};
 export const LoginDocument = gql`
     mutation Login($input: AuthInput!) {
   login(input: $input) {
@@ -350,6 +401,38 @@ export const RegisterDocument = gql`
 
 export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
+};
+export const UpdateClientDocument = gql`
+    mutation UpdateClient($id: ID!, $input: ClientInput!) {
+  updateClient(id: $id, input: $input) {
+    id
+    name
+    lastName
+    company
+    email
+    phone
+  }
+}
+    `;
+
+export function useUpdateClientMutation() {
+  return Urql.useMutation<UpdateClientMutation, UpdateClientMutationVariables>(UpdateClientDocument);
+};
+export const ClientDocument = gql`
+    query Client($id: ID!) {
+  client(id: $id) {
+    id
+    name
+    lastName
+    company
+    email
+    phone
+  }
+}
+    `;
+
+export function useClientQuery(options: Omit<Urql.UseQueryArgs<ClientQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<ClientQuery>({ query: ClientDocument, ...options });
 };
 export const ClientsDocument = gql`
     query Clients {
