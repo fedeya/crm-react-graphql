@@ -1,7 +1,11 @@
 import { Formik } from 'formik';
 import { useRouter } from 'next/router';
 import * as yup from 'yup';
-import { useClientQuery, useUpdateClientMutation } from '@Generated/graphql';
+import {
+  useClientQuery,
+  useUpdateClientMutation,
+  useCreateClientMutation
+} from '@Generated/graphql';
 import Swal from 'sweetalert2';
 
 import Form from '@Atoms/form';
@@ -9,18 +13,22 @@ import Error from '@Atoms/error';
 import FieldError from '@Molecules/field-error';
 import Button from '@Atoms/button';
 
-const EditClientForm: React.FC = () => {
+type ClientFormProps = {
+  edit: boolean;
+};
+
+const ClientForm: React.FC<ClientFormProps> = ({ edit }) => {
   const router = useRouter();
 
   const [{ data, fetching }] = useClientQuery({
-    variables: { id: router.query.id as string }
+    variables: { id: router.query.id as string },
+    pause: !edit
   });
 
-  const [{ error }, updateClient] = useUpdateClientMutation();
+  const [{ error: updateError }, updateClient] = useUpdateClientMutation();
+  const [{ error: createError }, createClient] = useCreateClientMutation();
 
   if (fetching) return <p>Loading...</p>;
-
-  const { company, email, lastName, name, phone } = data!.client;
 
   return (
     <Formik
@@ -37,31 +45,42 @@ const EditClientForm: React.FC = () => {
         })
       }
       initialValues={{
-        name,
-        company,
-        email,
-        lastName,
-        phone
+        name: data?.client.name || '',
+        company: data?.client.company || '',
+        email: data?.client.email || '',
+        lastName: data?.client.lastName || '',
+        phone: data?.client.phone || ''
       }}
       onSubmit={async input => {
-        const { data, error } = await updateClient({
-          input,
-          id: router.query.id as string
-        });
-        console.log(error);
+        if (edit) {
+          const { data } = await updateClient({
+            input,
+            id: router.query.id as string
+          });
+          if (!data) return;
+          await router.push('/');
+          await Swal.fire(
+            'Updated',
+            'the client was updated successfully',
+            'success'
+          );
+          return;
+        }
+
+        const { data } = await createClient({ input });
         if (!data) return;
         await router.push('/');
-        await Swal.fire(
-          'Updated',
-          'the client was updated successfully',
-          'success'
-        );
       }}
       enableReinitialize
     >
       {props => (
         <Form formik={props}>
-          <Error message={error?.graphQLErrors[0].message} />
+          <Error
+            message={
+              createError?.graphQLErrors[0].message ||
+              updateError?.graphQLErrors[0].message
+            }
+          />
           <FieldError name="name" formik={props} />
           <FieldError
             name="lastName"
@@ -72,11 +91,11 @@ const EditClientForm: React.FC = () => {
           <FieldError name="company" formik={props} />
           <FieldError name="email" type="email" formik={props} />
           <FieldError name="phone" type="tel" formik={props} />
-          <Button type="submit">Edit Client</Button>
+          <Button type="submit">{edit ? 'Edit' : 'Add'} Client</Button>
         </Form>
       )}
     </Formik>
   );
 };
 
-export default EditClientForm;
+export default ClientForm;
