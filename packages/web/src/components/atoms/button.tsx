@@ -2,6 +2,8 @@ import Link from 'next/link';
 
 type ButtonProps = {
   type?: 'submit' | 'button' | 'reset';
+  onClick(e: React.MouseEvent): void;
+  disabled?: boolean;
 };
 
 type DeleteButtonProps = {
@@ -14,8 +16,18 @@ type EditButtonProps = {
   as?: string;
 };
 
-const Button: React.FC<ButtonProps> = ({ type, children }) => (
-  <button className="form-button" type={type ?? 'button'}>
+const Button: React.FC<ButtonProps> = ({
+  type,
+  children,
+  onClick,
+  disabled
+}) => (
+  <button
+    className={`form-button ${disabled && 'opacity-50 cursor-not-allowed'}`}
+    type={type ?? 'button'}
+    disabled={disabled}
+    onClick={onClick}
+  >
     {children}
   </button>
 );

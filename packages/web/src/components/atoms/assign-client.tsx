@@ -1,29 +1,22 @@
-import { useState } from 'react';
+import { useContext } from 'react';
+import { useClientsQuery } from '@Generated/graphql';
 import Select from 'react-select';
-
-const clients = [
-  { id: '1', name: 'Fede' },
-  { id: '2', name: 'Tobias' },
-  { id: '3', name: 'Michael' },
-  { id: '4', name: 'Nova' }
-];
-
-interface Client {
-  id: number;
-  name: string;
-}
+import { OrderContext } from '../../context/orders/order-provider';
 
 const AssignClient: React.FC = () => {
-  const [client, setClient] = useState<any>([]);
+  const [{ data, fetching }] = useClientsQuery();
+  const { addClient } = useContext(OrderContext);
+
+  if (fetching) return <p>Loading...</p>;
 
   return (
     <Select
-      options={clients}
-      isMulti
-      onChange={option => setClient(option!)}
-      getOptionValue={({ id }) => id}
+      options={data?.clients}
+      onChange={option => addClient(option as any)}
+      getOptionValue={option => option.id}
       placeholder="Select the Client"
       getOptionLabel={option => option.name}
+      instanceId="assignClient"
     />
   );
 };
