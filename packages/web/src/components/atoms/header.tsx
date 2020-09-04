@@ -17,8 +17,8 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="flex justify-between mb-2">
-      <p className="mr-2">Hello: {data?.user.name}</p>
+    <header className="sm:flex sm:justify-between mb-2">
+      <p className="mr-2 mb-5 lg:mb-0">Hello: {data?.user.name}</p>
       <button
         onClick={handleClick}
         type="button"

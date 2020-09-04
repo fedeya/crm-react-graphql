@@ -2,7 +2,7 @@ import NavLink from '@Atoms/navlink';
 
 const Sidebar: React.FC = () => {
   return (
-    <aside className="bg-indigo-900 w-1/3 xl:w-1/5 min-h-screen p-5">
+    <aside className="bg-indigo-900 sm:w-1/3 xl:w-1/5 sm:min-h-screen p-5">
       <div>
         <p className="text-white text-2xl font-bold">CRM Clients</p>
       </div>
