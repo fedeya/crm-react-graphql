@@ -40,7 +40,6 @@ const RegisterForm: React.FC = () => {
       if (!data) return;
 
       localStorage.setItem('token', data.register.token);
-      await axios.post('/api/user', data.register.token);
       await router.push('/');
     }
   });

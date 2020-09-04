@@ -17,10 +17,14 @@ export async function initServer() {
         const token = req.headers['authorization'] || '';
 
         if (token) {
-          const { user } = verifyToken(token);
-          return {
-            user
-          };
+          try {
+            const { user } = verifyToken(token);
+            return {
+              user
+            };
+          } catch (err) {
+            return {};
+          }
         }
 
         return {};

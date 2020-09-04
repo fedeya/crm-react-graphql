@@ -27,6 +27,7 @@
   @apply text-white;
   @apply uppercase;
   @apply rounded;
+  @apply font-bold;
 }
 
 .form-button:hover {

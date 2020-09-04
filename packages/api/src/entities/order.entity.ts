@@ -38,7 +38,7 @@ export class Order {
   @Prop({ required: true, type: OrderProduct })
   order!: Partial<OrderProduct>[];
 
-  @Field(() => Int)
+  @Field()
   @Prop({ required: true })
   total!: number;
 

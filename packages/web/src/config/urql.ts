@@ -4,8 +4,13 @@ import { devtoolsExchange } from '@urql/devtools';
 import { cacheExchange, Cache } from '@urql/exchange-graphcache';
 import fetch from 'isomorphic-unfetch';
 import Cookies from 'cookies';
+import axios from 'axios';
 import { pipe, tap } from 'wonka';
-import { ClientsDocument, ProductsDocument } from '../generated/graphql';
+import {
+  ClientsDocument,
+  ProductsDocument,
+  OrdersDocument
+} from '../generated/graphql';
 import { NextPageContext } from 'next';
 
 const isServer = typeof window === 'undefined';
@@ -25,7 +30,7 @@ const errorExchange = (ctx?: NextPageContext): Exchange => ({
 }) => ops$ => {
   return pipe(
     forward(ops$),
-    tap(({ error }) => {
+    tap(({ error, ...other }) => {
       if (isServer && ctx) {
         if (ctx.res && !ctx.res.headersSent) {
           if (error?.message.toLowerCase().includes('access denied')) {
@@ -34,6 +39,21 @@ const errorExchange = (ctx?: NextPageContext): Exchange => ({
               ctx.res.end();
             } catch (err) {}
           }
+        }
+      }
+    })
+  );
+};
+
+const authExchange: Exchange = ({ forward }) => ops$ => {
+  return pipe(
+    forward(ops$),
+    tap(async ({ data }) => {
+      if (!isServer) {
+        if (data && data.login) {
+          await axios.post('/api/user', { token: data.login.token });
+        } else if (data && data.register) {
+          await axios.post('/api/user', { token: data.register.token });
         }
       }
     })
@@ -56,29 +76,40 @@ const urqlConfig: NextUrqlClientConfig = (ssrExchange, ctx) => {
           },
           createClient(result, _args, cache, _info) {
             cache.updateQuery({ query: ClientsDocument }, (data: any) => {
-              if (!data && !data.clients) return;
+              if (!data || !data.clients) return data;
               data.clients.push(result.createClient);
               return data;
             });
           },
           deleteClient(_result, args, cache, _info) {
-            cache.invalidate({ __typename: 'Client', id: args.id as number });
+            cache.invalidate({ __typename: 'Client', id: args.id as string });
           },
           createProduct(result, _args, cache, _info) {
             cache.updateQuery({ query: ProductsDocument }, (data: any) => {
-              if (!data && !data.products) return;
+              if (!data || !data.products) return data;
               data.products.push(result.createProduct);
               return data;
             });
           },
           deleteProduct(_result, args, cache, _info) {
-            cache.invalidate({ __typename: 'Product', id: args.id as number });
+            cache.invalidate({ __typename: 'Product', id: args.id as string });
+          },
+          createOrder(result, _args, cache, _info) {
+            cache.updateQuery({ query: OrdersDocument }, (data: any) => {
+              if (!data || !data.orders) return data;
+              data.orders.push(result.createOrder);
+              return data;
+            });
+          },
+          deleteOrder(_result, args, cache, _info) {
+            cache.invalidate({ __typename: 'Order', id: args.id as string });
           }
         }
       }
     }),
     ssrExchange,
     errorExchange(ctx),
+    authExchange,
     fetchExchange
   ];
 

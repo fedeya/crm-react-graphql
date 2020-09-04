@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 type ButtonProps = {
   type?: 'submit' | 'button' | 'reset';
-  onClick(e: React.MouseEvent): void;
+  onClick?(e: React.MouseEvent): void;
   disabled?: boolean;
 };
 

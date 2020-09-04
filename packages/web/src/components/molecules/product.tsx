@@ -25,7 +25,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
     });
     if (confirm.value) {
       if (product.id) await deleteProduct({ id: product.id });
-      Swal.fire('Deleted!', 'Your product has been deleted.', 'success');
+      await Swal.fire('Deleted!', 'Your product has been deleted.', 'success');
     }
   };
 

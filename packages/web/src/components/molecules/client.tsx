@@ -22,7 +22,7 @@ const Client: React.FC<ClientProps> = ({ client }) => {
     });
     if (confirm.value) {
       if (client.id) await deleteClient({ id: client.id });
-      Swal.fire('Deleted!', 'Your client has been deleted.', 'success');
+      await Swal.fire('Deleted!', 'Your client has been deleted.', 'success');
     }
   };
 

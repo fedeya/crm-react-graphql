@@ -37,7 +37,6 @@ const LoginForm: React.FC = () => {
       if (!data) return;
 
       localStorage.setItem('token', data.login.token);
-      await axios.post('/api/user', { token: data.login.token });
       await router.push('/');
     }
   });

@@ -1,5 +1,5 @@
-query Orders {
-  orders {
+mutation CreateOrder($input: OrderInput!) {
+  createOrder(input: $input) {
     id
     order {
       id

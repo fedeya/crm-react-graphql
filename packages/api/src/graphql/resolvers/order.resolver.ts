@@ -123,7 +123,7 @@ export class OrderResolver {
   @Authorized()
   @Mutation(() => Order)
   async deleteOrder(
-    @Arg('id') id: string,
+    @Arg('id', () => ID) id: string,
     @Ctx() ctx: Context
   ): Promise<Order> {
     const orderExist = await OrderModel.findById(id)

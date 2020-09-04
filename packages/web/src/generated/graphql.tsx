@@ -222,7 +222,7 @@ export type MutationUpdateOrderArgs = {
 
 
 export type MutationDeleteOrderArgs = {
-  id: Scalars['String'];
+  id: Scalars['ID'];
 };
 
 
@@ -254,6 +254,33 @@ export type CreateClientMutation = (
   ) }
 );
 
+export type CreateOrderMutationVariables = Exact<{
+  input: OrderInput;
+}>;
+
+
+export type CreateOrderMutation = (
+  { __typename?: 'Mutation' }
+  & { createOrder: (
+    { __typename?: 'Order' }
+    & Pick<Order, 'id' | 'total' | 'state'>
+    & { order: Array<(
+      { __typename?: 'OrderProduct' }
+      & Pick<OrderProduct, 'id' | 'quantity'>
+      & { product: (
+        { __typename?: 'Product' }
+        & Pick<Product, 'id' | 'name'>
+      ) }
+    )>, client: (
+      { __typename?: 'Client' }
+      & Pick<Client, 'id' | 'name' | 'lastName' | 'email' | 'phone'>
+    ), salesman: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'name'>
+    ) }
+  ) }
+);
+
 export type CreateProductMutationVariables = Exact<{
   input: ProductInput;
 }>;
@@ -277,6 +304,19 @@ export type DeleteClientMutation = (
   & { deleteClient: (
     { __typename?: 'Client' }
     & Pick<Client, 'id'>
+  ) }
+);
+
+export type DeleteOrderMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteOrderMutation = (
+  { __typename?: 'Mutation' }
+  & { deleteOrder: (
+    { __typename?: 'Order' }
+    & Pick<Order, 'id'>
   ) }
 );
 
@@ -333,6 +373,34 @@ export type UpdateClientMutation = (
   ) }
 );
 
+export type UpdateOrderMutationVariables = Exact<{
+  id: Scalars['ID'];
+  input: OrderInput;
+}>;
+
+
+export type UpdateOrderMutation = (
+  { __typename?: 'Mutation' }
+  & { updateOrder: (
+    { __typename?: 'Order' }
+    & Pick<Order, 'id' | 'total' | 'state'>
+    & { order: Array<(
+      { __typename?: 'OrderProduct' }
+      & Pick<OrderProduct, 'id' | 'quantity'>
+      & { product: (
+        { __typename?: 'Product' }
+        & Pick<Product, 'id' | 'name'>
+      ) }
+    )>, client: (
+      { __typename?: 'Client' }
+      & Pick<Client, 'id' | 'name' | 'lastName' | 'email' | 'phone'>
+    ), salesman: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'name'>
+    ) }
+  ) }
+);
+
 export type UpdateProductMutationVariables = Exact<{
   id: Scalars['ID'];
   input: ProductInput;
@@ -384,11 +452,11 @@ export type OrdersQuery = (
       & Pick<OrderProduct, 'id' | 'quantity'>
       & { product: (
         { __typename?: 'Product' }
-        & Pick<Product, 'name'>
+        & Pick<Product, 'id' | 'name'>
       ) }
     )>, client: (
       { __typename?: 'Client' }
-      & Pick<Client, 'id' | 'name'>
+      & Pick<Client, 'id' | 'name' | 'lastName' | 'email' | 'phone'>
     ), salesman: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'name'>
@@ -448,6 +516,38 @@ export const CreateClientDocument = gql`
 export function useCreateClientMutation() {
   return Urql.useMutation<CreateClientMutation, CreateClientMutationVariables>(CreateClientDocument);
 };
+export const CreateOrderDocument = gql`
+    mutation CreateOrder($input: OrderInput!) {
+  createOrder(input: $input) {
+    id
+    order {
+      id
+      product {
+        id
+        name
+      }
+      quantity
+    }
+    client {
+      id
+      name
+      lastName
+      email
+      phone
+    }
+    salesman {
+      id
+      name
+    }
+    total
+    state
+  }
+}
+    `;
+
+export function useCreateOrderMutation() {
+  return Urql.useMutation<CreateOrderMutation, CreateOrderMutationVariables>(CreateOrderDocument);
+};
 export const CreateProductDocument = gql`
     mutation CreateProduct($input: ProductInput!) {
   createProduct(input: $input) {
@@ -472,6 +572,17 @@ export const DeleteClientDocument = gql`
 
 export function useDeleteClientMutation() {
   return Urql.useMutation<DeleteClientMutation, DeleteClientMutationVariables>(DeleteClientDocument);
+};
+export const DeleteOrderDocument = gql`
+    mutation DeleteOrder($id: ID!) {
+  deleteOrder(id: $id) {
+    id
+  }
+}
+    `;
+
+export function useDeleteOrderMutation() {
+  return Urql.useMutation<DeleteOrderMutation, DeleteOrderMutationVariables>(DeleteOrderDocument);
 };
 export const DeleteProductDocument = gql`
     mutation DeleteProduct($id: ID!) {
@@ -521,6 +632,38 @@ export const UpdateClientDocument = gql`
 
 export function useUpdateClientMutation() {
   return Urql.useMutation<UpdateClientMutation, UpdateClientMutationVariables>(UpdateClientDocument);
+};
+export const UpdateOrderDocument = gql`
+    mutation UpdateOrder($id: ID!, $input: OrderInput!) {
+  updateOrder(id: $id, input: $input) {
+    id
+    order {
+      id
+      product {
+        id
+        name
+      }
+      quantity
+    }
+    client {
+      id
+      name
+      lastName
+      email
+      phone
+    }
+    salesman {
+      id
+      name
+    }
+    total
+    state
+  }
+}
+    `;
+
+export function useUpdateOrderMutation() {
+  return Urql.useMutation<UpdateOrderMutation, UpdateOrderMutationVariables>(UpdateOrderDocument);
 };
 export const UpdateProductDocument = gql`
     mutation UpdateProduct($id: ID!, $input: ProductInput!) {
@@ -575,6 +718,7 @@ export const OrdersDocument = gql`
     order {
       id
       product {
+        id
         name
       }
       quantity
@@ -582,6 +726,9 @@ export const OrdersDocument = gql`
     client {
       id
       name
+      lastName
+      email
+      phone
     }
     salesman {
       id

@@ -6,8 +6,6 @@ const OrderList: React.FC = () => {
 
   if (fetching) return <p>Loading...</p>;
 
-  console.log(data);
-
   return (
     <div className="mt-3">
       {data && data.orders.map(order => <Order key={order.id} order={order} />)}

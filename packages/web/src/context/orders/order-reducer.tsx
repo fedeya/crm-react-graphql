@@ -4,7 +4,7 @@ import { Order } from '../../types';
 export interface State {
   client: Partial<Client> | null;
   products: Partial<Product>[] | null;
-  orders: (Partial<OrderProduct> & { price: number })[];
+  orders: (Pick<OrderProduct, 'id' | 'quantity'> & { price: number })[];
   total: string;
 }
 
@@ -22,7 +22,7 @@ type Action =
     }
   | {
       type: Order.ADD_ORDER;
-      payload: Partial<OrderProduct> & { price: number };
+      payload: Pick<OrderProduct, 'id' | 'quantity'> & { price: number };
     }
   | {
       type: Order.REMOVE_ORDER;

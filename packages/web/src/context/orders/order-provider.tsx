@@ -7,7 +7,9 @@ import { Order } from 'src/types';
 interface OrderState extends State {
   addClient(client: Partial<Client>): void;
   addProducts(product: Partial<Product>[]): void;
-  addOrder(order: Partial<OrderProduct> & { price: number }): void;
+  addOrder(
+    order: Pick<OrderProduct, 'id' | 'quantity'> & { price: number }
+  ): void;
   removeOrder(id: string): void;
 }
 
