@@ -94,6 +94,7 @@ export class OrderResolver {
       if (!product) throw new Error('product not found');
 
       for await (const orderProduct of existOrder.order) {
+        if (!orderProduct.quantity) break;
         if (orderProduct.quantity === quantity) continue;
 
         if (orderProduct.quantity > quantity) {
@@ -139,6 +140,7 @@ export class OrderResolver {
         console.log(id);
         const product = await ProductModel.findById(id).exec();
         if (!product) throw new Error('Product not found');
+        if (!quantity) break;
         product.quantity += quantity;
 
         await product.save();

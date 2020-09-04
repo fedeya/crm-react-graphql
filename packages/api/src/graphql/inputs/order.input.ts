@@ -4,7 +4,7 @@ import { ObjectId } from 'mongodb';
 import { Order, OrderProduct, OrderState } from '@Entities/order.entity';
 
 @InputType()
-export class OrderProductInput implements OrderProduct {
+export class OrderProductInput implements Partial<OrderProduct> {
   @Field(() => ID)
   id!: string;
 

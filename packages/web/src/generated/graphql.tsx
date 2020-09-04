@@ -43,9 +43,20 @@ export type Client = {
   updatedAt: Scalars['DateTime'];
 };
 
+export type Product = {
+  __typename?: 'Product';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  quantity: Scalars['Int'];
+  price: Scalars['Float'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+};
+
 export type OrderProduct = {
   __typename?: 'OrderProduct';
   id: Scalars['ID'];
+  product: Product;
   quantity: Scalars['Int'];
 };
 
@@ -66,16 +77,6 @@ export enum OrderState {
   Completed = 'COMPLETED',
   Canceled = 'CANCELED'
 }
-
-export type Product = {
-  __typename?: 'Product';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  quantity: Scalars['Int'];
-  price: Scalars['Float'];
-  createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
-};
 
 export type TopClient = {
   __typename?: 'TopClient';
@@ -370,6 +371,31 @@ export type ClientsQuery = (
   )> }
 );
 
+export type OrdersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type OrdersQuery = (
+  { __typename?: 'Query' }
+  & { orders: Array<(
+    { __typename?: 'Order' }
+    & Pick<Order, 'id' | 'total' | 'state'>
+    & { order: Array<(
+      { __typename?: 'OrderProduct' }
+      & Pick<OrderProduct, 'id' | 'quantity'>
+      & { product: (
+        { __typename?: 'Product' }
+        & Pick<Product, 'name'>
+      ) }
+    )>, client: (
+      { __typename?: 'Client' }
+      & Pick<Client, 'id' | 'name'>
+    ), salesman: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'name'>
+    ) }
+  )> }
+);
+
 export type ProductQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -541,6 +567,34 @@ export const ClientsDocument = gql`
 
 export function useClientsQuery(options: Omit<Urql.UseQueryArgs<ClientsQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<ClientsQuery>({ query: ClientsDocument, ...options });
+};
+export const OrdersDocument = gql`
+    query Orders {
+  orders {
+    id
+    order {
+      id
+      product {
+        name
+      }
+      quantity
+    }
+    client {
+      id
+      name
+    }
+    salesman {
+      id
+      name
+    }
+    total
+    state
+  }
+}
+    `;
+
+export function useOrdersQuery(options: Omit<Urql.UseQueryArgs<OrdersQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<OrdersQuery>({ query: OrdersDocument, ...options });
 };
 export const ProductDocument = gql`
     query Product($id: ID!) {

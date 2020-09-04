@@ -1,6 +1,7 @@
 import { ObjectType, Field, ID, Int, registerEnumType } from 'type-graphql';
 import { Prop, getModelForClass, Ref } from '@typegoose/typegoose';
 
+import { Product } from './product.entity';
 import { Client } from './client.entity';
 import { User } from './user.entity';
 
@@ -20,6 +21,9 @@ export class OrderProduct {
   @Prop({ required: true })
   id!: string;
 
+  @Field(() => Product)
+  product!: Ref<Product>;
+
   @Field(() => Int)
   @Prop({ required: true })
   quantity!: number;
@@ -32,7 +36,7 @@ export class Order {
 
   @Field(() => [OrderProduct])
   @Prop({ required: true, type: OrderProduct })
-  order!: OrderProduct[];
+  order!: Partial<OrderProduct>[];
 
   @Field(() => Int)
   @Prop({ required: true })
