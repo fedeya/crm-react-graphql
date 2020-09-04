@@ -4,7 +4,7 @@ import { User } from '@Entities/user.entity';
 
 @ObjectType()
 export class TopSeller {
-  @Field(() => Int)
+  @Field()
   total!: number;
 
   @Field(() => User)

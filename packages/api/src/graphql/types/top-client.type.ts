@@ -4,7 +4,7 @@ import { Client } from '@Entities/client.entity';
 
 @ObjectType()
 export class TopClient {
-  @Field(() => Int)
+  @Field()
   total!: number;
 
   @Field(() => Client)
