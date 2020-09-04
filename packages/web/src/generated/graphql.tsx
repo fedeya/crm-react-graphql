@@ -488,6 +488,21 @@ export type ProductsQuery = (
   )> }
 );
 
+export type TopClientsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type TopClientsQuery = (
+  { __typename?: 'Query' }
+  & { topClients: Array<(
+    { __typename?: 'TopClient' }
+    & Pick<TopClient, 'total'>
+    & { client: (
+      { __typename?: 'Client' }
+      & Pick<Client, 'name'>
+    ) }
+  )> }
+);
+
 export type TopSellersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -785,6 +800,20 @@ export const ProductsDocument = gql`
 
 export function useProductsQuery(options: Omit<Urql.UseQueryArgs<ProductsQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<ProductsQuery>({ query: ProductsDocument, ...options });
+};
+export const TopClientsDocument = gql`
+    query TopClients {
+  topClients {
+    client {
+      name
+    }
+    total
+  }
+}
+    `;
+
+export function useTopClientsQuery(options: Omit<Urql.UseQueryArgs<TopClientsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<TopClientsQuery>({ query: TopClientsDocument, ...options });
 };
 export const TopSellersDocument = gql`
     query TopSellers {

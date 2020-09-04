@@ -1,0 +1,8 @@
+query TopClients {
+  topClients {
+    client {
+      name
+    }
+    total
+  }
+}

@@ -67,7 +67,8 @@ const urqlConfig: NextUrqlClientConfig = (ssrExchange, ctx) => {
       keys: {
         TopSeller: () => null,
         TopClient: () => null,
-        User: (user: any) => user.id
+        User: (user: any) => user.id,
+        Client: (client: any) => client.id
       },
       updates: {
         Mutation: {
