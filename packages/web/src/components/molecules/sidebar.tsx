@@ -13,6 +13,11 @@ const Sidebar: React.FC = () => {
           <NavLink href="/orders">Orders</NavLink>
           <NavLink href="/products">Products</NavLink>
         </ul>
+        <p className="my-3 text-white font-bold text-xl">Other Options</p>
+        <ul>
+          <NavLink href="/best-clients">Best Clients</NavLink>
+          <NavLink href="/best-sellers">Best Sellers</NavLink>
+        </ul>
       </nav>
     </aside>
   );

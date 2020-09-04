@@ -64,6 +64,11 @@ const urqlConfig: NextUrqlClientConfig = (ssrExchange, ctx) => {
   const exchanges = [
     dedupExchange,
     cacheExchange({
+      keys: {
+        TopSeller: () => null,
+        TopClient: () => null,
+        User: (user: any) => user.id
+      },
       updates: {
         Mutation: {
           login(_result, _args, cache, _info) {

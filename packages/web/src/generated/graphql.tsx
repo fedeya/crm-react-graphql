@@ -64,7 +64,7 @@ export type Order = {
   __typename?: 'Order';
   id: Scalars['ID'];
   order: Array<OrderProduct>;
-  total: Scalars['Int'];
+  total: Scalars['Float'];
   client: Client;
   salesman: User;
   state: OrderState;
@@ -80,13 +80,13 @@ export enum OrderState {
 
 export type TopClient = {
   __typename?: 'TopClient';
-  total: Scalars['Int'];
+  total: Scalars['Float'];
   client: Client;
 };
 
 export type TopSeller = {
   __typename?: 'TopSeller';
-  total: Scalars['Int'];
+  total: Scalars['Float'];
   seller: User;
 };
 
@@ -488,6 +488,21 @@ export type ProductsQuery = (
   )> }
 );
 
+export type TopSellersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type TopSellersQuery = (
+  { __typename?: 'Query' }
+  & { topSellers: Array<(
+    { __typename?: 'TopSeller' }
+    & Pick<TopSeller, 'total'>
+    & { seller: (
+      { __typename?: 'User' }
+      & Pick<User, 'name'>
+    ) }
+  )> }
+);
+
 export type UserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -770,6 +785,20 @@ export const ProductsDocument = gql`
 
 export function useProductsQuery(options: Omit<Urql.UseQueryArgs<ProductsQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<ProductsQuery>({ query: ProductsDocument, ...options });
+};
+export const TopSellersDocument = gql`
+    query TopSellers {
+  topSellers {
+    seller {
+      name
+    }
+    total
+  }
+}
+    `;
+
+export function useTopSellersQuery(options: Omit<Urql.UseQueryArgs<TopSellersQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<TopSellersQuery>({ query: TopSellersDocument, ...options });
 };
 export const UserDocument = gql`
     query User {

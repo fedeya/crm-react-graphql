@@ -1,0 +1,8 @@
+query TopSellers {
+  topSellers {
+    seller {
+      name
+    }
+    total
+  }
+}
