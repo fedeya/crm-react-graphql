@@ -1,16 +1,16 @@
 import { useRouter } from 'next/router';
 import axios from 'axios';
 
-import { useUserQuery } from '../../generated/graphql';
+import { useUserQuery } from '@Generated/graphql';
+import { useAuthQuery } from '../../hooks/auth';
 
 const Header: React.FC = () => {
-  const [{ data, fetching }] = useUserQuery();
+  const [{ data, fetching }] = useAuthQuery(useUserQuery);
   const router = useRouter();
 
   if (fetching) return <p>Loading...</p>;
 
   const handleClick = async () => {
-    localStorage.removeItem('token');
     await axios.post('/api/user', { token: '' });
 
     await router.push('/login');

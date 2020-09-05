@@ -1,8 +1,10 @@
+import { useMemo } from 'react';
 import Client from '@Molecules/client';
 import { useClientsQuery } from '@Generated/graphql';
+import { useAuthQuery } from '../../hooks/auth';
 
 const ClientsTable: React.FC = () => {
-  const [{ data, fetching }] = useClientsQuery();
+  const [{ data, fetching }] = useAuthQuery(useClientsQuery);
 
   if (fetching) return <p>Loading...</p>;
 

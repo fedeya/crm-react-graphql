@@ -9,11 +9,15 @@ import {
 } from 'recharts';
 import { useTopSellersQuery } from '@Generated/graphql';
 
+import { useAuthQuery } from '../../hooks/auth';
+
 const SellerChart = () => {
-  const [{ data, fetching }] = useTopSellersQuery({
-    pollInterval: 1000,
-    requestPolicy: 'network-only'
-  });
+  const [{ data, fetching }] = useAuthQuery(() =>
+    useTopSellersQuery({
+      pollInterval: 1000,
+      requestPolicy: 'network-only'
+    })
+  );
 
   if (fetching) return <p>Loading...</p>;
 

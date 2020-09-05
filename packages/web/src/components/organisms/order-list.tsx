@@ -1,8 +1,10 @@
 import { useOrdersQuery } from '@Generated/graphql';
 import Order from '@Molecules/order';
 
+import { useAuthQuery } from '../../hooks/auth';
+
 const OrderList: React.FC = () => {
-  const [{ data, fetching }] = useOrdersQuery();
+  const [{ data, fetching }] = useAuthQuery(useOrdersQuery);
 
   if (fetching) return <p>Loading...</p>;
 

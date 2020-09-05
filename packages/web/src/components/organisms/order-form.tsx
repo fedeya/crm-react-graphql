@@ -8,11 +8,12 @@ import Button from '@Atoms/button';
 import Error from '@Atoms/error';
 import OrderResume from '@Molecules/order-resume';
 import { useCreateOrderMutation } from '@Generated/graphql';
+import { useAuthMutation } from '../../hooks/auth';
 import { OrderContext } from '../../context/orders/order-provider';
 
 const OrderForm: React.FC = () => {
   const { orders, client, total } = useContext(OrderContext);
-  const [{ error }, createOrder] = useCreateOrderMutation();
+  const [{ error }, createOrder] = useAuthMutation(useCreateOrderMutation);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {

@@ -11,6 +11,7 @@ import {
 import Form from '@Atoms/form';
 import Error from '@Atoms/error';
 import Button from '@Atoms/button';
+import { useAuthQuery, useAuthMutation } from '../../hooks/auth';
 import FieldError from '@Molecules/field-error';
 
 type ProductFormProps = {
@@ -19,12 +20,20 @@ type ProductFormProps = {
 
 const ProductForm: React.FC<ProductFormProps> = ({ edit }) => {
   const router = useRouter();
-  const [{ data, fetching }] = useProductQuery({
-    variables: { id: router.query.id as string },
-    pause: !edit
-  });
-  const [{ error: updateError }, editProduct] = useUpdateProductMutation();
-  const [{ error: createError }, createProduct] = useCreateProductMutation();
+  const [{ data, fetching }] = useAuthQuery(
+    options =>
+      useProductQuery({
+        ...options,
+        variables: { id: router.query.id as string }
+      }),
+    !edit
+  );
+  const [{ error: updateError }, editProduct] = useAuthMutation(
+    useUpdateProductMutation
+  );
+  const [{ error: createError }, createProduct] = useAuthMutation(
+    useCreateProductMutation
+  );
 
   if (fetching) return <p>Loading...</p>;
 

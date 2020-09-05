@@ -3,12 +3,14 @@ import Swal from 'sweetalert2';
 import { DeleteButton, EditButton } from '@Atoms/button';
 import { useDeleteClientMutation } from '@Generated/graphql';
 
+import { useAuthMutation } from '../../hooks/auth';
+
 type ClientProps = {
   client: Partial<IClient>;
 };
 
 const Client: React.FC<ClientProps> = ({ client }) => {
-  const [, deleteClient] = useDeleteClientMutation();
+  const [, deleteClient] = useAuthMutation(useDeleteClientMutation);
 
   const confirmDeleteClient = async () => {
     const confirm = await Swal.fire({

@@ -6,12 +6,14 @@ import {
 } from '@Generated/graphql';
 import { EditButton, DeleteButton } from '@Atoms/button';
 
+import { useAuthMutation } from '../../hooks/auth';
+
 type ProductProps = {
   product: Partial<IProduct>;
 };
 
 const Product: React.FC<ProductProps> = ({ product }) => {
-  const [, deleteProduct] = useDeleteProductMutation();
+  const [, deleteProduct] = useAuthMutation(useDeleteProductMutation);
 
   const confirmDeleteProduct = async () => {
     const confirm = await Swal.fire({

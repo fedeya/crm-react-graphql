@@ -8,12 +8,15 @@ import {
   ResponsiveContainer
 } from 'recharts';
 import { useTopClientsQuery } from '@Generated/graphql';
+import { useAuthQuery } from '../../hooks/auth';
 
 const ClientChart = () => {
-  const [{ data, fetching }] = useTopClientsQuery({
-    pollInterval: 1000,
-    requestPolicy: 'network-only'
-  });
+  const [{ data, fetching }] = useAuthQuery(() =>
+    useTopClientsQuery({
+      pollInterval: 1000,
+      requestPolicy: 'network-only'
+    })
+  );
 
   if (fetching) return <p>Loading...</p>;
 

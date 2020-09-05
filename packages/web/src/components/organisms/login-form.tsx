@@ -1,5 +1,5 @@
+import { useContext } from 'react';
 import { useFormik } from 'formik';
-import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import * as yup from 'yup';
@@ -10,9 +10,11 @@ import Error from '@Atoms/error';
 import Button from '@Atoms/button';
 import Form from '@Atoms/form';
 import FieldError from '@Molecules/field-error';
+import { AuthContext } from '../../context/auth/auth-provider';
 
 const LoginForm: React.FC = () => {
   const [result, login] = useLoginMutation();
+  const { setToken } = useContext(AuthContext);
 
   const router = useRouter();
   const formik = useFormik({
@@ -36,7 +38,7 @@ const LoginForm: React.FC = () => {
       });
       if (!data) return;
 
-      localStorage.setItem('token', data.login.token);
+      setToken(data.login.token);
       await router.push('/');
     }
   });

@@ -8,6 +8,8 @@ import {
 } from '@Generated/graphql';
 import Swal from 'sweetalert2';
 
+import { useAuthMutation, useAuthQuery } from '../../hooks/auth';
+
 import Form from '@Atoms/form';
 import Error from '@Atoms/error';
 import FieldError from '@Molecules/field-error';
@@ -20,13 +22,21 @@ type ClientFormProps = {
 const ClientForm: React.FC<ClientFormProps> = ({ edit }) => {
   const router = useRouter();
 
-  const [{ data, fetching }] = useClientQuery({
-    variables: { id: router.query.id as string },
-    pause: !edit
-  });
+  const [{ data, fetching }] = useAuthQuery(
+    options =>
+      useClientQuery({
+        ...options,
+        variables: { id: router.query.id as string }
+      }),
+    !edit
+  );
 
-  const [{ error: updateError }, updateClient] = useUpdateClientMutation();
-  const [{ error: createError }, createClient] = useCreateClientMutation();
+  const [{ error: updateError }, updateClient] = useAuthMutation(
+    useUpdateClientMutation
+  );
+  const [{ error: createError }, createClient] = useAuthMutation(
+    useCreateClientMutation
+  );
 
   if (fetching) return <p>Loading...</p>;
 

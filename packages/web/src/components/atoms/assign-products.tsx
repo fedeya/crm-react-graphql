@@ -3,8 +3,10 @@ import { useProductsQuery } from '@Generated/graphql';
 import Select from 'react-select';
 import { OrderContext } from '../../context/orders/order-provider';
 
+import { useAuthQuery } from '../../hooks/auth';
+
 const AssignProducts: React.FC = () => {
-  const [{ data, fetching }] = useProductsQuery();
+  const [{ data, fetching }] = useAuthQuery(useProductsQuery);
   const { addProducts } = useContext(OrderContext);
 
   if (fetching) return <p>Loading...</p>;

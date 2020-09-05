@@ -1,8 +1,9 @@
 import { useProductsQuery } from '@Generated/graphql';
 import Product from '@Molecules/product';
+import { useAuthQuery } from '../../hooks/auth';
 
 const ProductsTable: React.FC = () => {
-  const [{ data, fetching }] = useProductsQuery();
+  const [{ data, fetching }] = useAuthQuery(useProductsQuery);
 
   if (fetching) return <p>Loading...</p>;
 

@@ -11,6 +11,8 @@ import {
 import Swal from 'sweetalert2';
 import Select from 'react-select';
 
+import { useAuthMutation } from '../../hooks/auth';
+
 type OrderProps = {
   order: Pick<IOrder, 'id' | 'total' | 'state'> & {
     order: (Pick<OrderProduct, 'id' | 'quantity' | '__typename'> & {
@@ -22,8 +24,8 @@ type OrderProps = {
 };
 
 const Order: React.FC<OrderProps> = ({ order }) => {
-  const [, updateOrder] = useUpdateOrderMutation();
-  const [, deleteOrder] = useDeleteOrderMutation();
+  const [, updateOrder] = useAuthMutation(useUpdateOrderMutation);
+  const [, deleteOrder] = useAuthMutation(useDeleteOrderMutation);
   const [state, setState] = useState({
     label: order.state,
     value: order.state

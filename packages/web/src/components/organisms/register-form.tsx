@@ -1,7 +1,8 @@
+import { useContext } from 'react';
 import { useFormik } from 'formik';
 import { useRegisterMutation } from '@Generated/graphql';
 import { useRouter } from 'next/router';
-import axios from 'axios';
+import { AuthContext } from '../../context/auth/auth-provider';
 import Link from 'next/link';
 import * as yup from 'yup';
 
@@ -13,6 +14,7 @@ import FieldError from '@Molecules/field-error';
 const RegisterForm: React.FC = () => {
   const [result, register] = useRegisterMutation();
 
+  const { setToken } = useContext(AuthContext);
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
@@ -39,7 +41,7 @@ const RegisterForm: React.FC = () => {
       });
       if (!data) return;
 
-      localStorage.setItem('token', data.register.token);
+      setToken(data.register.token);
       await router.push('/');
     }
   });
