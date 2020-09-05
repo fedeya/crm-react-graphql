@@ -1,6 +1,3 @@
-import { withUrqlClient } from 'next-urql';
-import urqlConfig from '../config/urql';
-
 import Layout from '@Organisms/layout';
 import RegisterForm from '@Organisms/register-form';
 
@@ -17,4 +14,4 @@ const Register: React.FC = () => {
   );
 };
 
-export default withUrqlClient(urqlConfig)(Register);
+export default Register;

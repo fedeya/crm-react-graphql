@@ -1,9 +1,5 @@
 import Layout from '@Organisms/layout';
-import { withUrqlClient } from 'next-urql';
-
 import ProductForm from '@Organisms/product-form';
-
-import urqlConfig from '../../config/urql';
 
 const EditProduct: React.FC = () => {
   return (
@@ -18,4 +14,4 @@ const EditProduct: React.FC = () => {
   );
 };
 
-export default withUrqlClient(urqlConfig, { ssr: true })(EditProduct);
+export default EditProduct;

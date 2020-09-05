@@ -1,9 +1,5 @@
 import Layout from '@Organisms/layout';
-import { withUrqlClient } from 'next-urql';
-
 import ClientForm from '@Organisms/client-form';
-
-import urqlConfig from '../../config/urql';
 
 const EditClient: React.FC = () => {
   return (
@@ -18,4 +14,4 @@ const EditClient: React.FC = () => {
   );
 };
 
-export default withUrqlClient(urqlConfig, { ssr: true })(EditClient);
+export default EditClient;

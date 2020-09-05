@@ -1,6 +1,3 @@
-import { withUrqlClient } from 'next-urql';
-
-import urqlConfig from '../config/urql';
 import LoginForm from '@Organisms/login-form';
 import Layout from '@Organisms/layout';
 
@@ -17,4 +14,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default withUrqlClient(urqlConfig)(Login);
+export default Login;

@@ -1,6 +1,3 @@
-import { withUrqlClient } from 'next-urql';
-
-import urqlConfig from '../config/urql';
 import Layout from '@Organisms/layout';
 import OrderForm from '@Organisms/order-form';
 
@@ -17,4 +14,4 @@ const NewOrder: React.FC = () => {
   );
 };
 
-export default withUrqlClient(urqlConfig, { ssr: true })(NewOrder);
+export default NewOrder;

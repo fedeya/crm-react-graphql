@@ -17,4 +17,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default withUrqlClient(urqlConfig, { ssr: true })(Home);
+export default Home;

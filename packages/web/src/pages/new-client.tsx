@@ -17,4 +17,4 @@ const NewClient: React.FC = () => {
   );
 };
 
-export default withUrqlClient(urqlConfig, { ssr: true })(NewClient);
+export default NewClient;

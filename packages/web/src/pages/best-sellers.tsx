@@ -1,8 +1,6 @@
 import dynamic from 'next/dynamic';
-import { withUrqlClient } from 'next-urql';
 
 import Layout from '@Organisms/layout';
-import urqlConfig from '../config/urql';
 
 const SellerChart = dynamic(() => import('@Molecules/seller-chart'), {
   ssr: false
@@ -17,4 +15,4 @@ const BestSellers: React.FC = () => {
   );
 };
 
-export default withUrqlClient(urqlConfig, { ssr: true })(BestSellers);
+export default BestSellers;

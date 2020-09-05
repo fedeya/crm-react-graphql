@@ -17,4 +17,4 @@ const BestClients: React.FC = () => {
   );
 };
 
-export default withUrqlClient(urqlConfig, { ssr: true })(BestClients);
+export default BestClients;
