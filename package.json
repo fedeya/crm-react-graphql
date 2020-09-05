@@ -2,10 +2,12 @@
   "name": "crm",
   "private": false,
   "devDependencies": {
-    "lerna": "^3.22.1"
+    "lerna": "^3.22.1",
+    "prettier": "^2.1.1"
   },
   "scripts": {
-    "dev": "lerna run dev --stream --parallel"
+    "dev": "lerna run dev --stream --parallel",
+    "lint": "prettier --write \"**/*.{js,ts,json,md}\""
   },
   "license": "MIT"
 }

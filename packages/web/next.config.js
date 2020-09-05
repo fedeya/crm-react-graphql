@@ -1,8 +1,8 @@
 module.exports = {
-  webpack: (config) => {
+  webpack: config => {
     config.node = {
       fs: 'empty'
-    }
-    return config
+    };
+    return config;
   }
 };
