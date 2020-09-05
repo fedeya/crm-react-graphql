@@ -25,12 +25,22 @@ const invalidateClients = (cache: Cache) => {
   });
 };
 
+const invalidateOrders = (cache: Cache) => {
+  const allFields = cache.inspectFields('Query');
+
+  const ordersQueries = allFields.filter(x => x.fieldName === 'orders');
+
+  ordersQueries.forEach(({ fieldName }) => {
+    cache.invalidate('Query', fieldName);
+  });
+};
+
 const errorExchange = (ctx?: NextPageContext): Exchange => ({
   forward
 }) => ops$ => {
   return pipe(
     forward(ops$),
-    tap(({ error, ...other }) => {
+    tap(({ error }) => {
       if (isServer && ctx) {
         if (ctx.res && !ctx.res.headersSent) {
           if (error?.message.toLowerCase().includes('access denied')) {
@@ -74,10 +84,12 @@ const urqlConfig: NextUrqlClientConfig = (ssrExchange, ctx) => {
         Mutation: {
           login(_result, _args, cache, _info) {
             invalidateClients(cache);
+            invalidateOrders(cache);
             cache.invalidate('Query', 'user');
           },
           register(_result, _args, cache, _info) {
             invalidateClients(cache);
+            invalidateOrders(cache);
             cache.invalidate('Query', 'user');
           },
           createClient(result, _args, cache, _info) {
@@ -125,15 +137,16 @@ const urqlConfig: NextUrqlClientConfig = (ssrExchange, ctx) => {
     url: 'http://localhost:4000',
     exchanges,
     fetchOptions: () => {
-      let token: string | null | undefined;
+      let token: string | undefined;
+
       if (isServer && ctx) {
-        const cookies = new Cookies(ctx.req!, ctx.res!);
-        token = cookies.get('token');
-      } else {
-        token = localStorage.getItem('token');
+        const cookie = new Cookies(ctx.req!, ctx.res!);
+        token = cookie.get('token');
       }
 
-      return { headers: { authorization: token ?? '' } };
+      return {
+        headers: { authorization: token ?? '' }
+      };
     },
     fetch
   };
