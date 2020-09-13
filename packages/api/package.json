@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn --rs --transpile-only -r tsconfig-paths/register src/index.ts"
+    "start": "node -r ./tsconfig-paths-bootstrap.js dist",
+    "dev": "ts-node-dev --respawn --rs --transpile-only -r tsconfig-paths/register src/index.ts",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
